@@ -1,38 +1,25 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Audio;
 
-public class Movement : MonoBehaviour
-{
-    // Start is called before the first frame update
-    public float speed = 18;
-    private bool isMoving = false;
-    private AudioSource ass;
-    private Rigidbody rig;
+public class Movement : MonoBehaviour {
 
-    void Start()
-    {
-        rig = gameObject.GetComponent<Rigidbody>();
-        ass = gameObject.GetComponent<AudioSource>();
-    }
+	public float speed = 10f;
+	public float rotateSpeed = 10f;
 
-    // Update is called once per frame
-    void Update()
-    {
-        Moving();
-        
-    }
+	private Vector3 movement;
+	private float rotation;
 
-   public void Moving()
-    {
-        float hAxis = Input.GetAxis("Horizontal");
-        float vAxis = Input.GetAxis("Vertical");
+	void Update ()
+	{
+		movement.z = Input.GetAxis("Vertical") * speed * Time.deltaTime;
+		rotation = Input.GetAxis("Horizontal") * rotateSpeed * Time.deltaTime;
+	}
 
-        Vector3 movement = new Vector3(hAxis, 0, vAxis) * speed * Time.deltaTime;
-
-        rig.MovePosition(transform.position + movement);
-        isMoving = true;
-        
-    }
+	void FixedUpdate ()
+	{
+		transform.Translate(movement, Space.Self);
+		transform.Rotate(0f, rotation, 0f);
+	}
+	
 }
